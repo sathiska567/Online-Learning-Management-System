@@ -51,9 +51,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div className={styles.Statics}>
-        <Statics />
-      </div>
+      
     </div>
   );
 };
