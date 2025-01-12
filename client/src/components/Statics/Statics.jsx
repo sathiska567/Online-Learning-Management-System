@@ -3,6 +3,7 @@ import { useInView } from "react-intersection-observer";
 import StaticStyles from "./Statics.module.css";
 import CountUp from "react-countup";
 import { Statistic } from "antd";
+import learnerIcon from '../../../public/LearnerIcon.svg'
 
 const formatter = (value) => (
   <>
@@ -19,7 +20,7 @@ const Statics = () => {
     <div className={StaticStyles.MainContainer}>
       <div className={StaticStyles.statSection}>
         <div className={StaticStyles.icon}>
-          <img src="/public/LearnerIcon.svg" alt="learner Icon" />
+          <img src={learnerIcon} alt="learner Icon" />
         </div>
         <div className={StaticStyles.statText}>
           <div ref={ref}>
@@ -34,7 +35,7 @@ const Statics = () => {
       </div>
       <div className={StaticStyles.statSection}>
         <div className={StaticStyles.icon}>
-          <img src="/public/LearnerIcon.svg" alt="learner Icon" />
+          <img src={learnerIcon} alt="learner Icon" />
         </div>
         <div className={StaticStyles.statText}>
           <div>
@@ -49,7 +50,7 @@ const Statics = () => {
       </div>
       <div className={StaticStyles.statSection}>
         <div className={StaticStyles.icon}>
-          <img src="/public/LearnerIcon.svg" alt="learner Icon" />
+          <img src={learnerIcon} alt="learner Icon" />
         </div>
         <div className={StaticStyles.statText}>
           <div>

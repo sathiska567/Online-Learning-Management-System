@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import headerImage from '../../../public/headerImage.png'
 import NavBar from "../../components/NavBar/NavBar"
+import Statics from "../../components/Statics/Statics";
 
 const LandingPage = () => {
   return (
@@ -49,6 +50,9 @@ const LandingPage = () => {
             />
           </div>
         </div>
+      </div>
+      <div className={styles.Statics}>
+        <Statics />
       </div>
     </div>
   );
