@@ -108,3 +108,10 @@ body {
   color: white;
   cursor: pointer;
 }
+
+
+.student-dashboard ,
+.teacher-dashboard
+{
+  padding-left: 10px;
+}

@@ -7,8 +7,11 @@ import {
   DashboardOutlined,
   PoweroffOutlined,
   BellOutlined,
+  FundViewOutlined,
+  AlignCenterOutlined
 } from "@ant-design/icons";
 import PendingActions from "../../icons/PendingActions";
+import './SideBar.css'
 
 const { Header, Sider } = Layout;
 
@@ -69,9 +72,9 @@ const SideBar = ({ children }) => {
   };
 
   return (
-    <Layout style={{ 
-      width: '100vw', 
-      height: '100vh', 
+    <Layout style={{
+      width: '100vw',
+      height: '100vh',
       overflow: 'hidden',
       position: 'fixed',
       top: 0,
@@ -94,10 +97,10 @@ const SideBar = ({ children }) => {
           zIndex: 1000
         }}
       >
-        <div style={{ 
-          height: '74px', 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          height: '74px',
+          display: 'flex',
+          alignItems: 'center',
           padding: '0 24px',
           borderBottom: '1px solid white',
           backgroundColor: '#15295E'
@@ -108,9 +111,9 @@ const SideBar = ({ children }) => {
             alt={userData.username}
           />
           {!collapsed && (
-            <span style={{ 
-              marginLeft: '12px', 
-              color: 'white', 
+            <span style={{
+              marginLeft: '12px',
+              color: 'white',
               fontSize: '16px',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -125,7 +128,7 @@ const SideBar = ({ children }) => {
           theme="dark"
           mode="inline"
           selectedKeys={[selectedMenuItem]}
-          style={{ 
+          style={{
             backgroundColor: '#15295E',
             height: 'calc(100vh - 112px)',
             overflowY: 'auto',
@@ -133,24 +136,47 @@ const SideBar = ({ children }) => {
             paddingTop: '15px',
           }}
         >
-          <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link to="/dashboard">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<PendingActions />}>
-            <Link to="/history">History</Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<PoweroffOutlined />} onClick={handleLogout}>
-            Log Out
-          </Menu.Item>
+          {false ? (
+            <div className="teacher-dashboard">
+              <Menu.Item key="1" icon={<DashboardOutlined />}>
+                <Link to="/dashboard">Dashboard</Link>
+              </Menu.Item>
+              <Menu.Item key="2" icon={<PendingActions />}>
+                <Link to="/history">History</Link>
+              </Menu.Item>
+              <Menu.Item key="3" icon={<PoweroffOutlined />} onClick={handleLogout}>
+                Log Out
+              </Menu.Item>
+            </div>
+          ) : (
+            <div className="student-dashboard">
+              <Menu.Item key="1" icon={<DashboardOutlined />}>
+                <Link to="/dashboard">Dashboard</Link>
+              </Menu.Item>
+              <Menu.Item key="2" icon={<PendingActions />}>
+                <Link to="/create-course">Create Course</Link>
+              </Menu.Item>
+              <Menu.Item key="3" icon={<AlignCenterOutlined />}>
+                <Link to="/enroll-student">Enrolled Students</Link>
+              </Menu.Item>
+              <Menu.Item key="4" icon={<FundViewOutlined />}>
+                <Link to="/created-all-course">View Courses</Link>
+              </Menu.Item>
+              <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
+                Log Out
+              </Menu.Item>
+            </div>
+          )}
+
         </Menu>
       </Sider>
 
-      <Layout style={{ 
+      <Layout style={{
         marginLeft: collapsed ? '100px' : '250px',
         height: '100vh',
         transition: 'margin-left 0.2s'
       }}>
-        <Header style={{ 
+        <Header style={{
           padding: 0,
           backgroundColor: '#15295E',
           position: 'fixed',
@@ -176,21 +202,21 @@ const SideBar = ({ children }) => {
                 fontSize: '16px'
               }}
             />
-            <span style={{ 
-              color: 'white', 
-              fontSize: '22px', 
+            <span style={{
+              color: 'white',
+              fontSize: '22px',
               marginLeft: '16px',
               letterSpacing: '0.05em'
             }}>
               Online Sync Pro
             </span>
           </div>
-          
+
           <div style={{ marginRight: '32px' }}>
             <Link to="/UserValidation">
               <Space>
                 <Badge count={notifications.length}>
-                  <Avatar 
+                  <Avatar
                     shape="square"
                     icon={<BellOutlined style={{ fontSize: '22px' }} />}
                   />
@@ -200,7 +226,7 @@ const SideBar = ({ children }) => {
           </div>
         </Header>
 
-        <div style={{ 
+        <div style={{
           height: '48px',
           backgroundColor: '#1D5596',
           position: 'fixed',
@@ -213,9 +239,6 @@ const SideBar = ({ children }) => {
           paddingLeft: '24px',
           transition: 'width 0.2s'
         }}>
-          <span style={{ color: 'white', fontSize: '16px' }}>
-            {MENU_TITLES[selectedMenuItem]}
-          </span>
         </div>
 
         <div style={{
