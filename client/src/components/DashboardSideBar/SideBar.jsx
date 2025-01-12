@@ -19,6 +19,7 @@ const MENU_TITLES = {
   "2": "User Validation",
   "3": "Search",
   "4": "Manage",
+  "5": "History",  // Added History
 };
 
 const SideBar = ({ children }) => {
@@ -38,6 +39,7 @@ const SideBar = ({ children }) => {
       "/AdminStats": "1",
       "/UserValidation": "2",
       "/Manage": "3",
+      "/history": "5",  // Added history route
     };
     setSelectedMenuItem(pathToKey[location.pathname] || "1");
   }, [location.pathname]);
@@ -105,7 +107,6 @@ const SideBar = ({ children }) => {
             src={userData.avatarUrl}
             alt={userData.username}
           />
-
           {!collapsed && (
             <span style={{ 
               marginLeft: '12px', 
@@ -133,12 +134,12 @@ const SideBar = ({ children }) => {
           }}
         >
           <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link to="/AdminStats">Dashboard</Link>
+            <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<PendingActions />}>
-            <Link to="/UserValidation">User Validation</Link>
+            <Link to="/history">History</Link>
           </Menu.Item>
-          <Menu.Item key="4" icon={<PoweroffOutlined />} onClick={handleLogout}>
+          <Menu.Item key="3" icon={<PoweroffOutlined />} onClick={handleLogout}>
             Log Out
           </Menu.Item>
         </Menu>
