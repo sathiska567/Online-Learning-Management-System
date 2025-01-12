@@ -1,140 +1,105 @@
-import React, { useState, useEffect } from "react";
-import UserStyles from "./LandingPage.module.css";
-import { Navbar, Nav, Form, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import logo from '../../../public/logo.png';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { message, Input, Button, Layout, Menu, Row, Col } from 'antd';
+import { SearchOutlined, LogoutOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
-const User = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState('');
+const { Header } = Layout;
 
-  // Handle scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+const Navbar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-  // Handle active link
-  useEffect(() => {
-    const handleActiveLink = () => {
-      const sections = document.querySelectorAll('section[id]');
-      const scrollPosition = window.scrollY + 100;
+  const handleLoginNavigate = () => {
+    try {
+      navigate('/login');
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
 
-      sections.forEach(section => {
-        if (
-          scrollPosition >= section.offsetTop &&
-          scrollPosition <= section.offsetTop + section.offsetHeight
-        ) {
-          setActiveLink(section.getAttribute('id'));
-        }
-      });
-    };
-    window.addEventListener('scroll', handleActiveLink);
-    return () => window.removeEventListener('scroll', handleActiveLink);
-  }, []);
+  const handleRegisterNavigate = () => {
+    try {
+      navigate('/register');
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const handleLogOutNavigate = () => {
+    try {
+      localStorage.clear();
+      message.success('Logout Successful');
+      window.location.reload();
+      navigate('/home');
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      message.warning('Please enter a search term.');
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}`
+      );
+      if (response.data.items?.length > 0) {
+        message.success('Search completed successfully!');
+        console.log('Books found:', response.data.items);
+      } else {
+        message.warning('No results found for your search.');
+      }
+    } catch (error) {
+      message.error('An error occurred during the search.');
+      console.error(error);
+    }
+  };
 
   return (
-    <div className={UserStyles.Home}>
-      <div className={`${UserStyles.NavOuterContainer} ${isScrolled ? UserStyles.scrolled : ''}`}>
-        {/* Desktop Navigation */}
-        <div className={UserStyles.DesktopNavBar}>
-          <Navbar className={`${UserStyles.NavBar} d-flex justify-content-between`} expand="lg">
-            <Navbar.Brand className={UserStyles.NavBrand} href="#">
-              <div className={UserStyles.Brand}>
-                <img src={logo} alt="logo" />
-                <div className={UserStyles.BrandText}>
-                  <span className={UserStyles.BrandMain}>G.U.</span>
-                  <span className={UserStyles.BrandDivider}>|</span>
-                  <span className={UserStyles.BrandSub}>Language Centre</span>
-                </div>
-              </div>
-            </Navbar.Brand>
-            
-            <Nav className={`${UserStyles.Nav}`}>
-              {[
-                { href: "#", label: "Home" },
-                { href: "#aboutUs", label: "About Us" },
-                { href: "#features", label: "Features" },
-                { href: "#benefits", label: "Our Benefits" },
-                { href: "#courseStructure", label: "Course Structure" },
-                { href: "#faq", label: "FAQs" }
-              ].map((item) => (
-                <Nav.Link
-                  key={item.href}
-                  href={item.href}
-                  className={`${UserStyles.NavLinks} ${
-                    activeLink === item.href.replace('#', '') ? UserStyles.active : ''
-                  }`}
-                >
-                  {item.label}
-                </Nav.Link>
-              ))}
-            </Nav>
+    <Header style={{ backgroundColor: '#001529', padding: '0 20px' }}>
+      <Row align="middle" justify="space-between">
+        {/* Logo */}
+        <Col>
+          <div
+            style={{ color: '#1890ff', fontSize: '24px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}
+            onClick={() => navigate('/home')}
+          >
+             📚 <span style={{ marginLeft: '10px' }}>EduSphere</span>
+          </div>
+        </Col>
 
-            <div className={UserStyles.NavButtons}>
-              <Button
-                className={UserStyles.RegisterButton}
-                href="https://registration.gulcentre.com/"
-                target="_blank"
-              >
-                Register Now
-                <FontAwesomeIcon icon={faArrowRight} className={UserStyles.buttonIcon} />
-              </Button>
-            </div>
-          </Navbar>
-        </div>
+        {/* Search Bar */}
+        <Col xs={24} sm={12} md={10} lg={8}>
+          <Input
+            placeholder="Search here..."
+            prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onPressEnter={handleSearch}
+            style={{ borderRadius: '5px' }}
+          />
+        </Col>
 
-        {/* Mobile Navigation */}
-        <div className={UserStyles.MobileNavBar}>
-          <Navbar expand="lg" className={UserStyles.navMob}>
-            <Navbar.Brand className={UserStyles.NavBrand} href="#">
-              <img src={logo} alt="logo" className={UserStyles.MobileLogo} />
-              <span>G.U.</span>
-            </Navbar.Brand>
-            
-            <Navbar.Toggle className={UserStyles.NavToggle} aria-controls="basic-navbar-nav">
-              <span className={UserStyles.ToggleIcon}></span>
-            </Navbar.Toggle>
-            
-            <Navbar.Collapse id="basic-navbar-nav" className={UserStyles.MobileCollapse}>
-              <Nav className={UserStyles.MobileNav}>
-                {[
-                  { href: "#", label: "Home" },
-                  { href: "#aboutUs", label: "About Us" },
-                  { href: "#features", label: "Features" },
-                  { href: "#benefits", label: "Our Benefits" },
-                  { href: "#courseStructure", label: "Course Structure" },
-                  { href: "#faq", label: "FAQs" }
-                ].map((item) => (
-                  <Nav.Link
-                    key={item.href}
-                    href={item.href}
-                    className={`${UserStyles.NavLinksMobile} ${
-                      activeLink === item.href.replace('#', '') ? UserStyles.active : ''
-                    }`}
-                  >
-                    {item.label}
-                  </Nav.Link>
-                ))}
-                <Button
-                  className={`${UserStyles.RegisterButton} ${UserStyles.MobileRegister}`}
-                  href="https://registration.gulcentre.com/"
-                  target="_blank"
-                >
-                  Register Now
-                  <FontAwesomeIcon icon={faArrowRight} className={UserStyles.buttonIcon} />
-                </Button>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-        </div>
-      </div>
-    </div>
+        {/* Auth Buttons */}
+        <Col>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Button onClick={handleLoginNavigate} type="default">
+              Sign In
+            </Button>
+            <Button onClick={handleRegisterNavigate} type="primary">
+              Register
+            </Button>
+            <Button onClick={handleLogOutNavigate} type="primary" danger icon={<LogoutOutlined />}>
+              Logout
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </Header>
   );
 };
 
-export default User;
+export default Navbar;

@@ -4,13 +4,13 @@ import { Navbar, Nav, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import headerImage from '../../../public/headerImage.png'
-import logo from '../../../public/logo.png'
+import NavBar from "../../components/NavBar/NavBar"
 
 const LandingPage = () => {
   return (
     <div className={styles.Home}>
       <div className={styles.NavOuterContainer}>
-          {/* <NavBar/> */}
+          <NavBar/>
         <div className={styles.HomeContainer}>
           <div className={styles.HomeTextContainer}>
             <div className={styles.homeTitle}>
