@@ -1,0 +1,26 @@
+.MainContainer {
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+}
+
+.statSection {
+    width: 25%;
+    height: 15vh;
+    background-color: rgba(82, 235, 158, 0.06);
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.statCount {
+    font-weight: 700;
+}
