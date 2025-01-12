@@ -1,6 +1,6 @@
-import "./SideBar.css";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Layout, Menu, Button, Avatar, Space, Badge } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -8,253 +8,226 @@ import {
   PoweroffOutlined,
   BellOutlined,
 } from "@ant-design/icons";
+import PendingActions from "../../icons/PendingActions";
 
-import { Layout, Menu, Button, Avatar, Space, Badge, message } from "antd";
-import PendingActions from "../icons/PendingActions.jsx";
-import axios from "axios";
-import { adminMenu, userMenu } from "../../Data/Data.js";
-
-// Destructuring components from Ant Design's Layout
 const { Header, Sider } = Layout;
 
+const DEFAULT_AVATAR = "https://static.vecteezy.com/system/resources/previews/009/383/461/non_2x/man-face-clipart-design-illustration-free-png.png";
 
-// Navbar component
+const MENU_TITLES = {
+  "1": "Dashboard",
+  "2": "User Validation",
+  "3": "Search",
+  "4": "Manage",
+};
+
 const SideBar = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [isHoveredButton1, setIsHoveredButton1] = useState(false);
-  const [isHoveredButton2, setIsHoveredButton2] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
-
-  // set name
-  const [currentUserName, setCurrentUsername] = useState();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [positionNotification, setPositionNotification] = useState();
-  const [isCoach, setIsCoach] = useState("");
-  const [isEventOrganizer, setIsEventOrganizer] = useState("");
-  const [isPlayer, setIsPlayer] = useState("");
-  const [isReferee, setIsReferee] = useState("");
-  const [isTeamManager, setIsTeamManager] = useState("");
-  const location = useLocation();
-  const [messages, setMessages] = useState([]);
-  const navigate = useNavigate();
-
-
-  // Event handlers for mouse hover events
-  const handleHoverButton1 = () => {
-    setIsHoveredButton1(true);
-  };
-
-  const handleMouseLeaveButton1 = () => {
-    setIsHoveredButton1(false);
-  };
-
-  const handleHoverButton2 = () => {
-    setIsHoveredButton2(true);
-  };
-
-  const handleMouseLeaveButton2 = () => {
-    setIsHoveredButton2(false);
-  };
-
-  // Event handler for menu item click
-  const handleMenuItemClick = (e) => {
-    setSelectedMenuItem(e.key);
-  };
-
-  // Functional component to display text based on selected menu item
-  const Text = ({ selectedMenuItem }) => {
-    const text = {
-      1: "Dashboard",
-      2: "User Validation",
-      3: "Search",
-      4: "Manage",
-    };
-
-    return <p>{text[selectedMenuItem]}</p>;
-  };
-
-  // URL for the profile avatar
-  const url =
-    "https://static.vecteezy.com/system/resources/previews/009/383/461/non_2x/man-face-clipart-design-illustration-free-png.png";
-
-  // Event handler for trigger button click
-  const handleTriggerButtonClick = () => {
-    setCollapsed(!collapsed);
-  };
-
-  // Get Database from the backend using Axios
+  const [notifications, setNotifications] = useState([]);
   const [userData, setUserData] = useState({
-    avatarUrl:
-      "https://static.vecteezy.com/system/resources/previews/009/383/461/non_2x/man-face-clipart-design-illustration-free-png.png",
-    username: "John Doe",
+    avatarUrl: DEFAULT_AVATAR,
+    username: "John Doe"
   });
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/demo")
-      .then((response) => {
-        const data = response.data;
+    const pathToKey = {
+      "/AdminStats": "1",
+      "/UserValidation": "2",
+      "/Manage": "3",
+    };
+    setSelectedMenuItem(pathToKey[location.pathname] || "1");
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/demo");
+        const data = await response.json();
         setUserData({
-          avatarUrl: data.avatarUrl,
-          username: data.username,
+          avatarUrl: data.avatarUrl || DEFAULT_AVATAR,
+          username: data.username
         });
-        console.log(response);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching user data:", error);
-      });
+      }
+    };
+    fetchUserData();
   }, []);
 
-
-  const getSelectedMenuItem = () => {
-    const path = location.pathname;
-    // Example matching:
-    if (path === "/AdminStats") {
-      return "1";
-    } else if (path === "/UserValidation") {
-      return "2";
-    } else if (path === "/Manage") {
-      return "3";
-    } else {
-      return "1"; // Default to Dashboard (or another suitable item)
+  const handleLogout = async () => {
+    try {
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
   };
-  useEffect(() => {
-    setSelectedMenuItem(getSelectedMenuItem());
-  }, [location.pathname]); // Update whenever the path changes
 
-  // get admin or not status
-  const sideBarMenu = true ? adminMenu : userMenu;
-
-  // JSX structure for the Navbar component
   return (
-    <>
-        <Layout className="ant-layout-sider-children">
-          <Sider
-            trigger={null}
-            collapsible
-            collapsed={collapsed}
-            collapsedWidth={100} 
-          >
+    <Layout style={{ 
+      width: '100vw', 
+      height: '100vh', 
+      overflow: 'hidden',
+      position: 'fixed',
+      top: 0,
+      left: 0
+    }}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={100}
+        width={250}
+        style={{
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          backgroundColor: '#15295E',
+          borderRight: '1px solid #1D5596',
+          zIndex: 1000
+        }}
+      >
+        <div style={{ 
+          height: '74px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          padding: '0 24px',
+          borderBottom: '1px solid white',
+          backgroundColor: '#15295E'
+        }}>
+          <Avatar
+            size="large"
+            src={userData.avatarUrl}
+            alt={userData.username}
+          />
 
-            <div style={{ backgroundColor: "#15295E" }} className="profile">
-              {collapsed ? (
-                <Avatar
-                  className="profileAvatar"
-                  src={<img src={userData.avatarUrl} alt="avatar" />}
-                />
-              ) : (
-                <>
-                  <Avatar
-                    className="profileAvatar"
-                    src={<img src={url} alt="avatar" />}
-                  />
-                  <div style={{ color: "white" }} className="Username">
-                    Sathiska
-                  </div>
-                </>
-              )}
-            </div>
+          {!collapsed && (
+            <span style={{ 
+              marginLeft: '12px', 
+              color: 'white', 
+              fontSize: '16px',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}>
+              {userData.username}
+            </span>
+          )}
+        </div>
 
-            <div style={{ color: "white" }} className="welcome">
-              Welcome
-            </div>
-            <div className="demo-logo-vertical" />
-            <Menu
-              onSelect={handleMenuItemClick}
-              selectedKeys={[selectedMenuItem]} 
-              theme="dark"
-              mode="inline"
-              defaultSelectedKeys={["1"]}
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[selectedMenuItem]}
+          style={{ 
+            backgroundColor: '#15295E',
+            height: 'calc(100vh - 112px)',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            paddingTop: '15px',
+          }}
+        >
+          <Menu.Item key="1" icon={<DashboardOutlined />}>
+            <Link to="/AdminStats">Dashboard</Link>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<PendingActions />}>
+            <Link to="/UserValidation">User Validation</Link>
+          </Menu.Item>
+          <Menu.Item key="4" icon={<PoweroffOutlined />} onClick={handleLogout}>
+            Log Out
+          </Menu.Item>
+        </Menu>
+      </Sider>
+
+      <Layout style={{ 
+        marginLeft: collapsed ? '100px' : '250px',
+        height: '100vh',
+        transition: 'margin-left 0.2s'
+      }}>
+        <Header style={{ 
+          padding: 0,
+          backgroundColor: '#15295E',
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          zIndex: 999,
+          width: `calc(100vw - ${collapsed ? '100px' : '250px'})`,
+          height: '64px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          transition: 'width 0.2s'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
               style={{
-                backgroundColor: "#15295E",
-                width: "100%",
-                height: "100vh",
-                fontSize: "16px",
+                width: '64px',
+                height: '64px',
+                color: 'white',
+                fontSize: '16px'
               }}
-            >
-              <Menu.Item key="1" icon={<DashboardOutlined />}>
-                <Link to="/AdminStats">Dashboard</Link>
-              </Menu.Item>
+            />
+            <span style={{ 
+              color: 'white', 
+              fontSize: '22px', 
+              marginLeft: '16px',
+              letterSpacing: '0.05em'
+            }}>
+              Online Sync Pro
+            </span>
+          </div>
+          
+          <div style={{ marginRight: '32px' }}>
+            <Link to="/UserValidation">
+              <Space>
+                <Badge count={notifications.length}>
+                  <Avatar 
+                    shape="square"
+                    icon={<BellOutlined style={{ fontSize: '22px' }} />}
+                  />
+                </Badge>
+              </Space>
+            </Link>
+          </div>
+        </Header>
 
-              <Menu.Item key="2" icon={<PendingActions />}>
-                <Link to="/UserValidation">User Validation</Link>
-              </Menu.Item>
+        <div style={{ 
+          height: '48px',
+          backgroundColor: '#1D5596',
+          position: 'fixed',
+          top: '64px',
+          right: 0,
+          zIndex: 998,
+          width: `calc(100vw - ${collapsed ? '100px' : '250px'})`,
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: '24px',
+          transition: 'width 0.2s'
+        }}>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            {MENU_TITLES[selectedMenuItem]}
+          </span>
+        </div>
 
-              <Menu.Item
-                key="4"
-                icon={<PoweroffOutlined />}
-                onMouseEnter={handleHoverButton1}
-                onMouseLeave={handleMouseLeaveButton1}
-              >
-                <Link onClick={handleLogOut}>Log Off</Link>
-              </Menu.Item>
-            </Menu>
-          </Sider>
-
-          <Layout>
-            <Header className="ant-layout-header">
-              <Button
-                className="trigger-button ant-btn"
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={handleTriggerButtonClick}
-                style={{
-                  fontSize: "16px",
-                  width: 64,
-                  height: 64,
-                  backgroundColor: isHoveredButton2 ? "#526CAE" : "#15295E",
-                  color: isHoveredButton2 ? "white" : "white",
-                }}
-                onMouseEnter={handleHoverButton2}
-                onMouseLeave={handleMouseLeaveButton2}
-              />
-              {/* Title and notification sections */}
-              <span
-                className="title"
-                style={{
-                  color: "white",
-                  marginLeft: "75px",
-                  letterSpacing: "1px",
-                  fontSize: "22px",
-                  fontWeight: "regular",
-                }}
-              >
-                GameSync Pro
-              </span>
-              <span style={{ color: "white" }} className="notificaiton">
-                <a href="/UserValidation">
-                  <Space size={24}>
-                    <Badge count={messages.length || positionNotification}>
-                      <Avatar
-                        shape="square"
-                        icon={
-                          <BellOutlined
-                            style={{
-                              fontSize: "22px",
-                            }}
-                          />
-                        }
-                      />
-                    </Badge>
-                  </Space>
-                </a>
-              </span>
-            </Header>
-
-            <div
-              className="title_bar"
-              style={{ color: "white", backgroundColor: "#1D5596" }}
-            >
-              <Text className="menuTitle" selectedMenuItem={selectedMenuItem} />
-            </div>
-            {children}
-          </Layout>
-        </Layout>
-     
-    </>
+        <div style={{
+          padding: '24px',
+          marginTop: '112px',
+          height: 'calc(100vh - 112px)',
+          overflowY: 'auto'
+        }}>
+          {children}
+        </div>
+      </Layout>
+    </Layout>
   );
 };
 
-// Exporting the Navbar component
 export default SideBar;
