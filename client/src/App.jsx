@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import CreateCourse from './pages/TeachersPages/CreateCourse'
 import ViewCourse from './pages/TeachersPages/ViewCourse';
 import EnrollStudents from './pages/TeachersPages/EnrollStudents';
+import ContactUsPage from './pages/ContactUsPage/ContactUsPage';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path='/create-course' element={<CreateCourse/>} />
         <Route path='/created-all-course' element={<ViewCourse/>} />
         <Route path='/enroll-student' element={<EnrollStudents/>} />
+        <Route path='/contact-us' element={<ContactUsPage/>} />
       </Routes>
     </Router>
   )

@@ -1,307 +1,144 @@
 /* LandingPage.module.css */
-
-.Home {
+.mainWrapper {
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    background: #ffffff;
+  }
+  
+  .contentWrapper {
+    width: 100%;
     min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background-image: url('/public/homepage.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Improved Navbar Styles */
-.NavOuterContainer {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(8px);
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.NavBar {
-    width: 90%;
-    max-width: 1400px;
-    padding: 1rem 0;
-    margin: 0 auto;
-    background-color: transparent;
-}
-
-.Brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.Brand:hover {
-    transform: translateY(-2px);
-}
-
-.Brand img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-}
-
-.NavBrand {
-    color: #10C843;
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    transition: color 0.3s ease;
-}
-
-.NavBrand:hover {
-    color: #52EB9E;
-}
-
-.NavLinks {
-    font-size: 1.1rem;
-    color: rgba(0, 0, 0, 0.7) !important;
-    margin: 0 1rem;
-    padding: 0.5rem 0;
-    transition: all 0.3s ease;
+    padding: 0 0 0 0%;
     position: relative;
-}
-
-.NavLinks::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #52EB9E;
-    transition: width 0.3s ease;
-}
-
-.NavLinks:hover {
-    color: #52EB9E !important;
-}
-
-.NavLinks:hover::after {
+  }
+  
+  .HomeContainer {
     width: 100%;
-}
-
-/* Enhanced Button Styles */
-.ContactUsButton {
-    min-width: 160px;
-    border-radius: 30px;
-    padding: 12px 28px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    background-color: #10C843;
-    border: none;
-    color: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(16, 200, 67, 0.2);
-}
-
-.ContactUsButton:hover {
-    background-color: #52EB9E;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 200, 67, 0.3);
-}
-
-/* Home Container Styles */
-.HomeContainer {
-    width: 90%;
-    max-width: 1400px;
-    margin: 4rem auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.HomeTextContainer {
+    min-height: calc(100vh - 80px); /* Adjust based on your navbar height */
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.homeTitle {
-    font-size: 3.5rem;
-    font-weight: 800;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0;
+    gap: 0px;
+    flex-wrap: wrap;
+    
+  }
+  
+  .HomeTextContainer {
+    flex: 1;
+    min-width: 300px;
+    max-width:700px;
+    padding-left:5%;
+  }
+  
+  .homeTitle {
+    font-size: 48px;
+    font-weight: 600;
     line-height: 1.2;
-    letter-spacing: -1px;
-    color: #1a1a1a;
-}
-
-.HomeSpecial {
-    color: #10C843;
-    position: relative;
-    display: inline-block;
-    transition: color 0.3s ease;
-}
-
-.HomeSpecial::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #52EB9E;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.HomeSpecial:hover::after {
-    transform: scaleX(1);
-}
-
-.homeDescription {
-    font-size: 1.2rem;
+    margin-bottom: 24px;
+  }
+  
+  .HomeSpecial {
+    color: #2B468B;
+  }
+  
+  .homeDescription {
+    font-size: 16px;
     line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
-    max-width: 600px;
-}
-
-.homeButtonGroup {
+    color: #666;
+    margin-bottom: 32px;
+  }
+  
+  .homeButtonGroup {
     display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.coursesButton, .contactUsButton {
-    padding: 14px 28px;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .coursesButton, .contactUsButton {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 8px;
+    cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.coursesButton {
-    background-color: #10C843;
+  }
+  
+  .coursesButton {
+    background: #2B468B;
     color: white;
     border: none;
-    box-shadow: 0 4px 15px rgba(16, 200, 67, 0.2);
-}
-
-.contactUsButton {
-    background-color: white;
-    color: #10C843;
-    border: 2px solid #10C843;
-}
-
-.coursesButton:hover, .contactUsButton:hover {
-    transform: translateY(-2px);
-}
-
-.coursesButton:hover {
-    background-color: #52EB9E;
-    box-shadow: 0 6px 20px rgba(16, 200, 67, 0.3);
-}
-
-.contactUsButton:hover {
-    background-color: rgba(16, 200, 67, 0.05);
-    border-color: #52EB9E;
-    color: #52EB9E;
-}
-
-.arrow {
+  }
+  
+  .contactUsButton {
+    background: transparent;
+    border: 2px solid #2B468B;
+    color: #2B468B;
+  }
+  
+  .arrow {
+    font-size: 14px;
     transition: transform 0.3s ease;
-}
-
-.coursesButton:hover .arrow,
-.contactUsButton:hover .arrow {
+  }
+  
+  .coursesButton:hover .arrow,
+  .contactUsButton:hover .arrow {
     transform: translateX(5px);
-}
-
-.HomeImageContainer {
+  }
+  
+  .HomeImageContainer {
+    flex: 1;
+    min-width: 300px;
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.HomeImage {
-    width: 100%;
-    max-width: 600px;
+  }
+  
+  .HomeImage {
+    max-width: 100%;
     height: auto;
-    transition: transform 0.3s ease;
-}
+    object-fit: contain;
+  }
+  
+  /* Add smooth scrolling to the whole page */
+  html {
+    scroll-behavior: smooth;
+  }
 
-.HomeImage:hover {
-    transform: scale(1.02);
-}
-
-/* Mobile Navigation Styles */
-.MobileNavBar {
-    display: none;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .homeTitle {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .DesktopNavBar {
-        display: none;
-    }
-    
-    .MobileNavBar {
-        display: block;
-    }
-    
+  .navBarSection{
+    /* background-color: red; */
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
     .HomeContainer {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 2rem;
+      flex-direction: column;
+      text-align: center;
+      padding-top: 20px;
     }
-    
+  
+    .HomeTextContainer {
+      order: 1;
+      padding: 20px;
+    }
+  
     .homeButtonGroup {
-        justify-content: center;
+      justify-content: center;
     }
-    
-    .homeDescription {
-        margin: 0 auto;
-    }
-}
-
-@media (max-width: 768px) {
+  
     .homeTitle {
-        font-size: 2.5rem;
+      font-size: 36px;
     }
-    
-    .homeButtonGroup {
-        flex-direction: column;
-        align-items: center;
+  
+    .HomeImageContainer {
+      order: 0;
     }
-    
-    .coursesButton, .contactUsButton {
-        width: 100%;
-        justify-content: center;
+  
+    .contentWrapper {
+      padding: 0 20px;
     }
-}
-
-@media (max-width: 480px) {
-    .NavBar {
-        width: 95%;
-    }
-    
-    .homeTitle {
-        font-size: 2rem;
-    }
-    
-    .homeDescription {
-        font-size: 1rem;
-    }
-    
-    .NavLinksMobile {
-        padding: 1rem;
-        border-radius: 8px;
-    }
-}
-
+  }
