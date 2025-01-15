@@ -64,8 +64,8 @@ const AnalyticPage = () => {
             <Card 
               title={
                 <span>
-                  LEARNING PROGRESS 
-                  <Tooltip title="Overall progress across all courses">
+                  USERS PROGRESS 
+                  <Tooltip title="Overall progress across system">
                     <InfoCircleOutlined className="ml-2" />
                   </Tooltip>
                 </span>
@@ -77,11 +77,6 @@ const AnalyticPage = () => {
                   percent={45}
                   success={{ percent: 80 }}
                 />
-                <div className="mt-4">
-                  <span className="mr-4">Completed</span>
-                  <span> | </span>
-                  <span className="ml-4">In Progress</span>
-                </div>
               </div>
             </Card>
           </Col>

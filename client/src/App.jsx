@@ -8,6 +8,11 @@ import ViewCourse from './pages/TeachersPages/ViewCourse';
 import EnrollStudents from './pages/TeachersPages/EnrollStudents';
 import ContactUsPage from './pages/ContactUsPage/ContactUsPage';
 import AnalyticPage from './pages/AdminPages/AnalyticPage';
+import RegistrationPage from './pages/AuthPages/RegisterPage';
+import LoginPage from './pages/AuthPages/LoginPage';
+import ForgottenPasswordPage from './pages/AuthPages/ForgottenPasswordPage';
+import OTPPage from './pages/AuthPages/OTPPage';
+import ChangePasswordPage from './pages/AuthPages/ChangePasswordPage';
 
 export default function App() {
   return (
@@ -21,7 +26,13 @@ export default function App() {
         <Route path='/created-all-course' element={<ViewCourse/>} />
         <Route path='/enroll-student' element={<EnrollStudents/>} />
         <Route path='/contact-us' element={<ContactUsPage/>} />
-      </Routes>
+
+        <Route path='/register' element = {<RegistrationPage/>}/>
+        <Route path='/login' element={<LoginPage/>} />
+        <Route path='/forgot-password' element={<ForgottenPasswordPage/>} />
+        <Route path='/otp' element={<OTPPage/>} />
+        <Route path='/reset' element={<ChangePasswordPage/>} />
+      </Routes> 
     </Router>
   )
 }

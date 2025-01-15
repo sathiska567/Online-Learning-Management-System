@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Layout, Menu, Button, Avatar, Space, Badge } from "antd";
+import { Layout, Menu, Button, Avatar, Space, Badge, message } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -12,6 +12,8 @@ import {
 } from "@ant-design/icons";
 import PendingActions from "../../icons/PendingActions";
 import './SideBar.css'
+import api from "../../api/baseUrl";
+import { use } from "react";
 
 const { Header, Sider } = Layout;
 
@@ -31,11 +33,18 @@ const SideBar = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [userData, setUserData] = useState({
     avatarUrl: DEFAULT_AVATAR,
-    username: "John Doe"
+    username: ""
   });
+  const [role , setRole] = useState()
+  const [isStudent , setIsStudent] = useState();
+  const [isTeacher , setIsTeacher] = useState();
+  const [isAdmin , setIsAdmin] = useState();
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  console.log(location);
+  
 
   useEffect(() => {
     const pathToKey = {
@@ -47,29 +56,53 @@ const SideBar = ({ children }) => {
     setSelectedMenuItem(pathToKey[location.pathname] || "1");
   }, [location.pathname]);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/demo");
-        const data = await response.json();
-        setUserData({
-          avatarUrl: data.avatarUrl || DEFAULT_AVATAR,
-          username: data.username
-        });
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
+
+  const getCurrentUserDetails = async () => {
+    try {
+      // const response = await api.get('/auth/getCurrentUser');
+      // console.log(response);
+
+      // if(response.data.success){
+      //   setUserData({
+      //     avatarUrl: response.data.user.avatarUrl || DEFAULT_AVATAR,
+      //     username: response.data.user.name
+      //   });
+      //    if(response.data.user.isStudent){
+      //      setIsStudent(true)
+      //    }
+      //    if(response.data.user.isTeacher){
+      //     setIsTeacher(true)
+      //    }
+      //    if(response.data.user.isAdmin){
+      //     setIsAdmin(true)
+      //    }
+      // }
+      
+    } catch (error) {
+      message.error("Error fetching user data");
+    }
+  };
 
   const handleLogout = async () => {
     try {
+
+      localStorage.clear()
+      setUserData({
+        avatarUrl: DEFAULT_AVATAR,
+        username: "",
+      });
+      
       navigate("/login");
+
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
+
+
+  useEffect(()=>{
+    getCurrentUserDetails()
+  },[])
 
   return (
     <Layout style={{
@@ -119,7 +152,7 @@ const SideBar = ({ children }) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis'
             }}>
-              {userData.username}
+              {location.state.data.name}
             </span>
           )}
         </div>
@@ -136,7 +169,7 @@ const SideBar = ({ children }) => {
             paddingTop: '15px',
           }}
         >
-          {false ? (
+          {location.state.data.isStudent ? (
             <div className="teacher-dashboard">
               <Menu.Item key="1" icon={<DashboardOutlined />}>
                 <Link to="/dashboard">Dashboard</Link>
@@ -148,25 +181,48 @@ const SideBar = ({ children }) => {
                 Log Out
               </Menu.Item>
             </div>
-          ) : (
-            <div className="student-dashboard">
-              <Menu.Item key="1" icon={<DashboardOutlined />}>
-                <Link to="/dashboard">Dashboard</Link>
-              </Menu.Item>
-              <Menu.Item key="2" icon={<PendingActions />}>
-                <Link to="/create-course">Create Course</Link>
-              </Menu.Item>
-              <Menu.Item key="3" icon={<AlignCenterOutlined />}>
-                <Link to="/enroll-student">Enrolled Students</Link>
-              </Menu.Item>
-              <Menu.Item key="4" icon={<FundViewOutlined />}>
-                <Link to="/created-all-course">View Courses</Link>
-              </Menu.Item>
-              <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
-                Log Out
-              </Menu.Item>
-            </div>
-          )}
+          ) : location.state.data.isTeacher ? (
+            (
+              <div className="student-dashboard">
+                <Menu.Item key="1" icon={<DashboardOutlined />}>
+                  <Link to="/dashboard">Dashboard</Link>
+                </Menu.Item>
+                <Menu.Item key="2" icon={<PendingActions />}>
+                  <Link to="/create-course">Create Course</Link>
+                </Menu.Item>
+                <Menu.Item key="3" icon={<AlignCenterOutlined />}>
+                  <Link to="/enroll-student">Enrolled Students</Link>
+                </Menu.Item>
+                <Menu.Item key="4" icon={<FundViewOutlined />}>
+                  <Link to="/created-all-course">View Courses</Link>
+                </Menu.Item>
+                <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
+                  Log Out
+                </Menu.Item>
+              </div>
+            )
+          ): location.state.data.isAdmin ? (
+              (
+                <div className="student-dashboard">
+                  <Menu.Item key="1" icon={<DashboardOutlined />}>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </Menu.Item>
+                  <Menu.Item key="2" icon={<PendingActions />}>
+                    <Link to="/create-course">Create Course</Link>
+                  </Menu.Item>
+                  <Menu.Item key="3" icon={<AlignCenterOutlined />}>
+                    <Link to="/enroll-student">Enrolled Students</Link>
+                  </Menu.Item>
+                  <Menu.Item key="4" icon={<FundViewOutlined />}>
+                    <Link to="/created-all-course">View Courses</Link>
+                  </Menu.Item>
+                  <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
+                    Log Out
+                  </Menu.Item>
+                </div>
+            ) 
+          ):("")
+          }
 
         </Menu>
       </Sider>
