@@ -7,6 +7,7 @@ import CreateCourse from './pages/TeachersPages/CreateCourse'
 import ViewCourse from './pages/TeachersPages/ViewCourse';
 import EnrollStudents from './pages/TeachersPages/EnrollStudents';
 import ContactUsPage from './pages/ContactUsPage/ContactUsPage';
+import AnalyticPage from './pages/AdminPages/AnalyticPage';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/analytic" element= {<AnalyticPage/>} />
         <Route path="/history" element={<EnrollmentHistory/>} />
         <Route path='/create-course' element={<CreateCourse/>} />
         <Route path='/created-all-course' element={<ViewCourse/>} />
