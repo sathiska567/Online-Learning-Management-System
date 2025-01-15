@@ -4,62 +4,18 @@ import { BookOutlined, ExperimentOutlined, FieldTimeOutlined, TeamOutlined, Info
 import SideBar from '../../components/DashboardSideBar/SideBar';
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 import './AnalyticPage.css'
+import CourseProgressChart from '../../components/CourseProgressChart/CourseProgressChart';
 
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const AnalyticPage = () => {
-  const [timeRange, setTimeRange] = useState('week');
   
-  // Enhanced weekly study data
-  const studyData = {
-    week: [
-      { day: 'SAT', studyTime: 20, assignments: 2, quizzes: 1 },
-      { day: 'SUN', studyTime: 65, assignments: 4, quizzes: 2 },
-      { day: 'MON', studyTime: 45, assignments: 3, quizzes: 1 },
-      { day: 'TUE', studyTime: 50, assignments: 3, quizzes: 2 },
-      { day: 'WED', studyTime: 80, assignments: 5, quizzes: 3 },
-      { day: 'THU', studyTime: 40, assignments: 2, quizzes: 1 },
-      { day: 'FRI', studyTime: 40, assignments: 2, quizzes: 2 }
-    ],
-    month: [
-      { day: 'Week 1', studyTime: 45, assignments: 12, quizzes: 8 },
-      { day: 'Week 2', studyTime: 60, assignments: 15, quizzes: 10 },
-      { day: 'Week 3', studyTime: 75, assignments: 18, quizzes: 12 },
-      { day: 'Week 4', studyTime: 55, assignments: 14, quizzes: 9 }
-    ]
-  };
-
-  const courses = [
-    {
-      title: 'Advanced Web Development',
-      progress: 75,
-      color: '#B39DDB',
-      completed: '15/20 modules',
-      deadline: '2 weeks left'
-    },
-    {
-      title: 'Data Structures & Algorithms',
-      progress: 60,
-      color: '#90CAF9',
-      completed: '12/20 modules',
-      deadline: '3 weeks left'
-    },
-    {
-      title: 'Machine Learning Basics',
-      progress: 45,
-      color: '#80DEEA',
-      completed: '9/20 modules',
-      deadline: '4 weeks left'
-    }
-  ];
-
   const stats = {
     coursesProgress: 3,
     activeAssignments: 7,
     totalHours: '3h 15m',
-    score: 240
   };
 
   return (
@@ -100,6 +56,8 @@ const AnalyticPage = () => {
 
         <Row>
           <Col xs={24} md={16}>
+            
+                <CourseProgressChart/>
              
           </Col>
         <Col xs={24} md={8}>
