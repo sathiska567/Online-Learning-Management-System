@@ -28,7 +28,7 @@ const Navbar = () => {
 
   const handleLogOutNavigate = () => {
     try {
-      localStorage.clear();
+      localStorage.removeItem("token");
       message.success('Logout Successful');
       window.location.reload();
       navigate('/home');

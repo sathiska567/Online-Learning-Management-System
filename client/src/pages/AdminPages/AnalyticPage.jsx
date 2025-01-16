@@ -7,10 +7,8 @@ import { Line, Bar, Doughnut } from "react-chartjs-2";
 import CourseProgressChart from '../../components/CourseProgressChart/CourseProgressChart';
 import api from '../../api/baseUrl';
 
-
 const { Title } = Typography;
 const { Option } = Select;
-
 
 const AnalyticPage = () => {
   const [createdCourse, setCreatedCourse] = useState([]);
@@ -18,6 +16,7 @@ const AnalyticPage = () => {
   const [numberOfCourses, setNumberOfCourses] = useState(0);
   const [numberOfTeachers , setNumberOfTeachers] = useState(0);
   const [numberOfStudents , setNumberOfStudents] = useState(0);
+  const [numberOfPendingApproval , setNumberOfPendingApproval] = useState(0);
 
   const getCurrentUser = async () => {
     const token = localStorage.getItem('token');
@@ -52,10 +51,11 @@ const AnalyticPage = () => {
   const getAllTeachers = async()=>{
     try {
       const response = await api.get("/auth/allTeachers")
-      console.log(response.data.studentData);
+      console.log(response.data);
       
       setNumberOfTeachers(response.data.data)
       setNumberOfStudents(response.data.studentData)
+      setNumberOfPendingApproval(response.data.pendingTeachers)
       
     } catch (error) {
        message.error("Error Occur while fetching All Teachers")
@@ -64,7 +64,7 @@ const AnalyticPage = () => {
 
   const stats = {
     coursesProgress: numberOfTeachers,
-    activeAssignments:numberOfCourses,
+    activeAssignments:numberOfPendingApproval,
     numberOfStudents:numberOfStudents,
   };
 
@@ -101,7 +101,7 @@ const AnalyticPage = () => {
               <div className="text-center">
                 <ExperimentOutlined className="text-blue-500 text-xl mb-2" />
                 <div className="text-2xl font-bold">{stats.activeAssignments}</div>
-                <div className="text-gray-500">Number Of Request</div>
+                <div className="text-gray-500">Number Of Pending Request</div>
               </div>
             </Card>
           </Col>

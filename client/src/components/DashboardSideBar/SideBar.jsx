@@ -40,6 +40,7 @@ const SideBar = ({ children }) => {
   const [isStudent , setIsStudent] = useState();
   const [isTeacher , setIsTeacher] = useState();
   const [isAdmin , setIsAdmin] = useState();
+  const [isTeacherVerified,setIsTeacherVerified] = useState();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ const SideBar = ({ children }) => {
         setIsAdmin(user.isAdmin);
         setIsStudent(user.isStudent);
         setIsTeacher(user.isTeacher);
+        setIsTeacherVerified(user.isTeacherVerified)
         setUserData({
           avatarUrl: user.avatarUrl || DEFAULT_AVATAR,
           username: user.name,
@@ -100,7 +102,7 @@ const SideBar = ({ children }) => {
   const handleLogout = async () => {
     try {
 
-      localStorage.clear()
+      localStorage.removeItem('token')
       setUserData({
         avatarUrl: DEFAULT_AVATAR,
         username: "",
@@ -201,15 +203,19 @@ const SideBar = ({ children }) => {
                 <Menu.Item key="1" icon={<DashboardOutlined />}>
                   <Link to="/teacher-analytic">Dashboard</Link>
                 </Menu.Item>
-                <Menu.Item key="2" icon={<PendingActions />}>
-                  <Link to="/create-course">Create Course</Link>
-                </Menu.Item>
-                <Menu.Item key="3" icon={<AlignCenterOutlined />}>
-                  <Link to="/enroll-student">Enrolled Students</Link>
-                </Menu.Item>
-                <Menu.Item key="4" icon={<FundViewOutlined />}>
-                  <Link to="/created-all-course">View Courses</Link>
-                </Menu.Item>
+                   {isTeacherVerified ? (
+                     <div>
+                      <Menu.Item key="2" icon={<PendingActions />}>
+                    <Link to="/create-course">Create Course</Link>
+                  </Menu.Item>
+                  <Menu.Item key="3" icon={<AlignCenterOutlined />}>
+                    <Link to="/enroll-student">Enrolled Students</Link>
+                  </Menu.Item>
+                  <Menu.Item key="4" icon={<FundViewOutlined />}>
+                    <Link to="/created-all-course">View Courses</Link>
+                  </Menu.Item>
+                     </div>
+                   ):("")}
                 <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
                   Log Out
                 </Menu.Item>
@@ -222,7 +228,10 @@ const SideBar = ({ children }) => {
                     <Link to="/analytic">Dashboard</Link>
                   </Menu.Item>
                   <Menu.Item key="3" icon={<AlignCenterOutlined />}>
-                    <Link to="/enroll-student">Manage Teachers</Link>
+                    <Link to="/manage-teachers">Manage Teachers</Link>
+                  </Menu.Item>
+                  <Menu.Item key="3" icon={<FundViewOutlined />}>
+                    <Link to="/manage-course">Manage Course</Link>
                   </Menu.Item>
                   <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
                     Log Out

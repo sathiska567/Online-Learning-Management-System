@@ -16,6 +16,8 @@ import ChangePasswordPage from './pages/AuthPages/ChangePasswordPage';
 import TeacherAnalyticPage from './pages/TeachersPages/TeacherAnalyticPage';
 import ViewCourseDetails from './pages/TeachersPages/ViewCourseDetails';
 import SingleCourseViewPage from './pages/SingleCourseViewPage/SingleCourseViewPage';
+import ManageTeachersPage from './pages/AdminPages/ManageTeachersPage/ManageTeachersPage';
+import ManageCourseApprove from './pages/AdminPages/ManageCourseApprove/ManageCourseApprove';
 
 export default function App() {
   return (
@@ -26,9 +28,13 @@ export default function App() {
         
 
         <Route path="/dashboard" element={<Dashboard/>} />
+
         <Route path="/analytic" element= {<AnalyticPage/>} />
         <Route path="/teacher-analytic" element= {<TeacherAnalyticPage/>} />
-
+        <Route path="/manage-teachers" element= {<ManageTeachersPage/>} />
+        <Route path="/manage-course" element= {<ManageCourseApprove/>} />
+        
+          
         <Route path="/history" element={<EnrollmentHistory/>} />
         <Route path='/create-course' element={<CreateCourse/>} />
         <Route path='/view-course' element={<ViewCourseDetails/>} />
