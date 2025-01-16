@@ -65,7 +65,7 @@ const Navbar = () => {
         <Col>
           <div
             style={{ color: '#1890ff', fontSize: '24px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/')}
           >
              📚 <span style={{ marginLeft: '10px' }}>EduSphere</span>
           </div>

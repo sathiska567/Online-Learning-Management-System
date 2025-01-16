@@ -1,8 +1,46 @@
-import React from 'react'; // Remove the duplicate import
+import React, { useEffect, useState } from 'react'; // Remove the duplicate import
 import SideBar from '../../components/DashboardSideBar/SideBar'; // Ensure the path to SideBar is correct
 import { Space, Table, Tag } from 'antd';
 
 export default function EnrollStudents() {
+  const [createdCourse, setCreatedCourse] = useState([]);
+    const [userId, setUserId] = useState('');
+
+  const getCurrentUser = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await api.get('/auth/getCurrentUser', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response);
+      setUserId(response.data.user._id);
+    } catch (error) {
+      message.error(error.response?.data?.message || 'Error fetching user data');
+    }
+  };
+
+    // Fetch courses based on the teacher's userId
+  const getCreateAllCourse = async () => {
+      try {
+        const response = await api.post('/courses/getCourse', { teacherId: userId });
+        console.log(response);
+  
+        if (response.data.success) {
+          const coursesWithKeys = response.data.data.map((course) => ({
+            ...course,
+            key: course.id || course._id, // Use a unique identifier from data
+          }));
+          setCreatedCourse(coursesWithKeys);
+        }
+      } catch (error) {
+        message.error('Something went wrong in fetching course data');
+        console.error('Error fetching courses:', error);
+      }
+    };
+
   const columns = [
     {
       title: 'Name',
@@ -51,6 +89,17 @@ export default function EnrollStudents() {
       ),
     },
   ];
+
+  useEffect(() => {
+      getCurrentUser();
+    }, []);
+  
+    // Fetch courses after userId is updated
+    useEffect(() => {
+      if (userId) {
+        getCreateAllCourse();
+      }
+    }, [userId]);
 
   const data = [
     {

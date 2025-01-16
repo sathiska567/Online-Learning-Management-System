@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   Avatar,
@@ -12,7 +12,7 @@ import {
   Tag,
   Tooltip,
   Carousel,
-  Progress
+  message
 } from "antd";
 import {
   LeftOutlined,
@@ -22,6 +22,8 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import UIUX from '../../assets/ui-ux.webp'
+import api from "../../api/baseUrl";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -30,6 +32,8 @@ const CourseSection = () => {
   const [activeTab, setActiveTab] = useState("UX/UI Design");
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
+  const [createdCourse , setCreatedCourse] = useState([])
+  const navigate = useNavigate()
 
   const categories = [
     "Project Manager",
@@ -40,68 +44,35 @@ const CourseSection = () => {
     "Front-End Developer",
   ];
 
-  const courses = [
-        {
-          id: 1,
-          title: "Google UX/UI Analytics",
-          instructor: "Theresa Webb",
-          role: "UX/UI designer",
-          description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-          rating: 4.8,
-          reviews: "44k",
-          duration: "6 months",
-          level: "Beginner",
-          students: "12.5k",
-          image: UIUX,
-          avatarUrl: "/api/placeholder/40/40",
-        },
-        {
-          id: 2,
-          title: "Google UX/UI Analytics",
-          instructor: "Theresa Webb",
-          role: "UX/UI designer",
-          description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-          rating: 4.8,
-          reviews: "44k",
-          duration: "6 months",
-          level: "Beginner",
-          students: "12.5k",
-          image: UIUX,
-          avatarUrl: "/api/placeholder/40/40",
-        },
-        {
-          id: 3,
-          title: "Google UX/UI Analytics",
-          instructor: "Theresa Webb",
-          role: "UX/UI designer",
-          description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-          rating: 4.8,
-          reviews: "44k",
-          duration: "6 months",
-          level: "Beginner",
-          students: "12.5k",
-          image: UIUX,
-          avatarUrl: "/api/placeholder/40/40",
-        },
-        {
-          id: 4,
-          title: "Google UX/UI Analytics",
-          instructor: "Theresa Webb",
-          role: "UX/UI designer",
-          description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-          rating: 4.8,
-          reviews: "44k",
-          duration: "6 months",
-          level: "Beginner",
-          students: "12.5k",
-          image: UIUX,
-          avatarUrl: "/api/placeholder/40/40",
-        },
-      ];
 
-  // Calculate number of pages
+  const getCreatedCourseWithCategory = async()=>{
+     try {
+      const response = await api.get("/courses/all")
+      console.log(response);
+      
+      setCreatedCourse(response.data.data)
+     } catch (error) {
+        message.error(error.message)
+     }
+  }
+
+  const handleNavigateSingleCourse = async(course)=>{
+    try {
+      console.log(course);
+      
+      navigate("/single-course",{state:{course:course}})
+      
+    } catch (error) {
+       message.error(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    getCreatedCourseWithCategory()
+  },[])
+
   const itemsPerPage = 3;
-  const totalPages = Math.ceil(courses.length / itemsPerPage);
+  const totalPages = Math.ceil(createdCourse.length / itemsPerPage);
   const currentPage = currentSlide + 1;
 
   const handlePrev = () => {
@@ -140,26 +111,6 @@ const CourseSection = () => {
       </Row>
 
       <Row justify="space-between" align="middle" className="mb-8" style={{marginBottom:"5%"}}>
-        <Col flex="auto">
-          <Space wrap size={12}>
-            {categories.map((category) => (
-              <Button
-                key={category}
-                type={activeTab === category ? "primary" : "default"}
-                shape="round"
-                size="large"
-                onClick={() => handleTabChange(category)}
-                style={{
-                  padding: "0 24px",
-                  height: "40px",
-                  boxShadow: activeTab === category ? "0 2px 8px rgba(24, 144, 255, 0.15)" : "none",
-                }}
-              >
-                {category}
-              </Button>
-            ))}
-          </Space>
-        </Col>
         <Col>
           <Space align="center" size={16}>
             <Text type="secondary">
@@ -200,17 +151,18 @@ const CourseSection = () => {
           {Array.from({ length: totalPages }).map((_, pageIndex) => (
             <div key={pageIndex}>
               <Row gutter={[24, 24]}>
-                {courses
+                {createdCourse
                   .slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
                   .map((course) => (
                     <Col xs={24} md={8} key={course.id}>
                       <Card
+                         onClick={()=>handleNavigateSingleCourse(course)}
                         hoverable
                         cover={
                           <div style={{ position: "relative" }}>
                             <img
                               alt={course.title}
-                              src={course.image}
+                              src={course.imgLink}
                               style={{
                                 height: 200,
                                 objectFit: "cover",
@@ -226,7 +178,7 @@ const CourseSection = () => {
                                 padding: "4px 8px",
                               }}
                             >
-                              {course.level}
+                              {course.category}
                             </Tag>
                           </div>
                         }
@@ -256,14 +208,13 @@ const CourseSection = () => {
                           <Row justify="space-between" align="middle">
                             <Col>
                               <Space>
-                                <Text strong>{course.rating}</Text>
+                                <Text strong>{course.overallRatings}</Text>
                                 <Rate
                                   disabled
-                                  defaultValue={course.rating}
+                                  defaultValue={course.overallRatings}
                                   allowHalf
                                   character={<StarFilled style={{ fontSize: 14 }} />}
                                 />
-                                <Text type="secondary">({course.reviews})</Text>
                               </Space>
                             </Col>
                           </Row>
@@ -272,10 +223,6 @@ const CourseSection = () => {
                             <Space>
                               <ClockCircleOutlined />
                               <Text>{course.duration}</Text>
-                            </Space>
-                            <Space>
-                              <UserOutlined />
-                              <Text>{course.students} students</Text>
                             </Space>
                           </Space>
                         </Space>
@@ -286,7 +233,6 @@ const CourseSection = () => {
             </div>
           ))}
         </Carousel>
-
       </div>
     </div>
   );

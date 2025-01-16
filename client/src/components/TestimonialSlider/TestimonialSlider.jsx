@@ -9,7 +9,7 @@ const TestimonialSlider = () => {
     {
       id: 1,
       content: "Since implementing KnowledgePluse, our organization has witnessed a remarkable transformation in how we approach learning. The platform's simplicity belies its powerful capabilities, offering a seamless and enjoyable educational experience. The efficiency with which we can now manage courses, track progress, and foster collaboration among learners is truly impressive.",
-      author: "Theresa Webb",
+      author: "Sathiska",
       title: "Theresa Webb",
       avatars: [
         "/path/to/avatar1.jpg",
@@ -21,7 +21,7 @@ const TestimonialSlider = () => {
     {
       id: 1,
       content: "Since implementing KnowledgePluse, our organization has witnessed a remarkable transformation in how we approach learning. The platform's simplicity belies its powerful capabilities, offering a seamless and enjoyable educational experience. The efficiency with which we can now manage courses, track progress, and foster collaboration among learners is truly impressive.",
-      author: "Theresa Webb",
+      author: "Sasindu",
       title: "Theresa Webb",
       avatars: [
         "/path/to/avatar1.jpg",

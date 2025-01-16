@@ -14,18 +14,24 @@ import ForgottenPasswordPage from './pages/AuthPages/ForgottenPasswordPage';
 import OTPPage from './pages/AuthPages/OTPPage';
 import ChangePasswordPage from './pages/AuthPages/ChangePasswordPage';
 import TeacherAnalyticPage from './pages/TeachersPages/TeacherAnalyticPage';
+import ViewCourseDetails from './pages/TeachersPages/ViewCourseDetails';
+import SingleCourseViewPage from './pages/SingleCourseViewPage/SingleCourseViewPage';
 
 export default function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage/>} />
+        <Route path="/single-course" element={<SingleCourseViewPage/>} />
+        
+
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/analytic" element= {<AnalyticPage/>} />
         <Route path="/teacher-analytic" element= {<TeacherAnalyticPage/>} />
 
         <Route path="/history" element={<EnrollmentHistory/>} />
         <Route path='/create-course' element={<CreateCourse/>} />
+        <Route path='/view-course' element={<ViewCourseDetails/>} />
         <Route path='/created-all-course' element={<ViewCourse/>} />
         <Route path='/enroll-student' element={<EnrollStudents/>} />
         <Route path='/contact-us' element={<ContactUsPage/>} />

@@ -1,84 +1,130 @@
-import React from 'react'; // Remove the duplicate import
-import SideBar from '../../components/DashboardSideBar/SideBar'; // Ensure the path to SideBar is correct
-import { Space, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
+import SideBar from '../../components/DashboardSideBar/SideBar';
+import { Button, message, Space, Table } from 'antd';
+import api from '../../api/baseUrl';
+import { useNavigate } from 'react-router-dom';
 
 export default function ViewCourse() {
+  const [createdCourse, setCreatedCourse] = useState([]);
+  const [userId, setUserId] = useState('');
+  const navigate = useNavigate()
+
+  const getCurrentUser = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await api.get('/auth/getCurrentUser', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response);
+      setUserId(response.data.user._id);
+    } catch (error) {
+      message.error(error.response?.data?.message || 'Error fetching user data');
+    }
+  };
+
+  // Fetch courses based on the teacher's userId
+  const getCreateAllCourse = async () => {
+    try {
+      const response = await api.post('/courses/getCourse', { teacherId: userId });
+      console.log(response);
+
+      if (response.data.success) {
+        const coursesWithKeys = response.data.data.map((course) => ({
+          ...course,
+          key: course.id || course._id, // Use a unique identifier from data
+        }));
+        setCreatedCourse(coursesWithKeys);
+      }
+    } catch (error) {
+      message.error('Something went wrong in fetching course data');
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  // Fetch courses after userId is updated
+  useEffect(() => {
+    if (userId) {
+      getCreateAllCourse();
+    }
+  }, [userId]); // This effect runs only when userId is updated
+
+  const handleView = (record) => {
+    navigate("/view-course",{state:{data:record}})
+    // message.info(`Viewing course: ${record.title}`);
+  };
+
+  const handleDelete = async (record) => {
+    try {
+      console.log(record.key);
+      const deleteResponse = await api.post("/courses/delete",{id:record.key})
+      console.log(deleteResponse);
+      if (deleteResponse.data.success) {
+        message.success('Course deleted successfully');
+        getCreateAllCourse();
+      }
+
+    } catch (error) {
+      message.error('Failed to delete course');
+      console.error('Error deleting course:', error);
+    }
+  };
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>, // Optional: Add proper anchor behavior
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      render: (text, record) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price) => `₹${price}`,
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      title: 'Created At',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date) => new Date(date).toLocaleDateString(),
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a href="#">View</a>
-          <a href="#">Delete</a> {/* Added href="#" for better accessibility */}
+          <Button
+            onClick={() => handleView(record)}
+            style={{ backgroundColor: '#1890ff', color: 'white', border: 'none' }}
+          >
+            View
+          </Button>
+          <Button
+            onClick={() => handleDelete(record)}
+            style={{ backgroundColor: '#f5222d', color: 'white', border: 'none' }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
-
   return (
     <SideBar>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={createdCourse} />
     </SideBar>
   );
 }

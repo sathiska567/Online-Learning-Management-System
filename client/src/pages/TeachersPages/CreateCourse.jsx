@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   Input,
@@ -20,8 +20,8 @@ const { TextArea } = Input;
 const CreateCourse = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [userId , setUserId] = useState('');
 
-  // Categories for the select dropdown
   const categories = [
     'Web Development',
     'Mobile Development',
@@ -30,46 +30,102 @@ const CreateCourse = () => {
     'Other'
   ];
 
+  const getCurrentUser = async()=>{
+    const token = localStorage.getItem('token');
+    try {
+      const response = await api.get("/auth/getCurrentUser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response);
+      setUserId(response.data.user._id)
+      
+    } catch (error) {
+       message.error(error.message)
+    }
+  }
+
   const onFinish = async (values) => {
     setLoading(true);
     try {
       // Convert price to number
       values.price = parseFloat(values.price);
-      
-      // Add default values
+  
       values.enrolledStudents = [];
       values.ratings = 0;
       values.reviews = [];
       values.createdAt = new Date();
       values.updatedAt = new Date();
-
+  
       console.log('Form values:', values);
-
-      const courseImage = values.imgLink.fileList[0].originFileObj;
-      // console.log(values.title);
-      
+  
+      const courseImage = values?.imgLink?.fileList?.[0]?.originFileObj;
+      if (!courseImage) {
+        throw new Error('Image file is missing.');
+      }
+  
       const formData = new FormData();
-      formData.append('image', courseImage);
-      formData.append("title",values.title)
-      formData.append("description",values.description)
-      formData.append("category",values.category)
-      formData.append("price",values.price)
-      formData.append("instructorName",values.instructor)
-      formData.append("duration",values.duration)
-
-      const response = await api.post("/courses/create",formData)
-      console.log(response);
-      
-      message.success('Course created successfully!');
-
-      // form.resetFields();
+      formData.append('file', courseImage);
+      formData.append('upload_preset', 'onlineLearn'); // my preset
+      formData.append('folder', 'courses');
+  
+      console.log('Uploading to Cloudinary...');
+  
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dov8hd3v6/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Cloudinary Error:', errorData);
+        throw new Error(
+          `Failed to upload image to Cloudinary: ${errorData.error.message}`
+        );
+      }
+  
+      const data = await response.json();
+      console.log('Cloudinary Response:', data);
+  
+      const imageUrl = data.secure_url;
+  
+      values.imgLink = imageUrl;
+  
+      console.log('Final course values:', values);
+  
+      const courseCreateResponse = await api.post('/courses/create', {
+        teacherId: userId,
+        title: values.title,
+        description: values.description,
+        imgLink: values.imgLink,
+        price: values.price,
+        duration: values.duration,
+        instructor: values.instructor,
+        category: values.category,
+        reviews: [],
+        ratings: 0,
+        enrolledStudents: [],
+      });
+  
+      if (courseCreateResponse.data.success) {
+        message.success('Course created successfully!');
+        form.resetFields(); // Clear the input fields
+      } else {
+        message.error('Course creation failed!');
+      }
     } catch (error) {
-      message.error('Failed to create course');
+      message.error(`Failed to create course: ${error.message}`);
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const uploadProps = {
     beforeUpload: (file) => {
@@ -83,6 +139,10 @@ const CreateCourse = () => {
       console.log(info.file);
     },
   };
+
+  useEffect(()=>{
+    getCurrentUser()
+  },[])
 
   return (
      <SideBar>
