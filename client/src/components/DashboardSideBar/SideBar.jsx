@@ -14,6 +14,7 @@ import PendingActions from "../../icons/PendingActions";
 import './SideBar.css'
 import api from "../../api/baseUrl";
 import { use } from "react";
+import axios from "axios";
 
 const { Header, Sider } = Layout;
 
@@ -58,30 +59,43 @@ const SideBar = ({ children }) => {
 
 
   const getCurrentUserDetails = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      message.error("No token found. Please log in again.");
+      return;
+    }
+  
     try {
-      // const response = await api.get('/auth/getCurrentUser');
-      // console.log(response);
+      const response = await axios.get("http://localhost:8080/api/v1/auth/getCurrentUser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // if(response.data.success){
-      //   setUserData({
-      //     avatarUrl: response.data.user.avatarUrl || DEFAULT_AVATAR,
-      //     username: response.data.user.name
-      //   });
-      //    if(response.data.user.isStudent){
-      //      setIsStudent(true)
-      //    }
-      //    if(response.data.user.isTeacher){
-      //     setIsTeacher(true)
-      //    }
-      //    if(response.data.user.isAdmin){
-      //     setIsAdmin(true)
-      //    }
-      // }
+      console.log(response);
       
+  
+      if (response.data.success) {
+        const user = response.data.user;
+        setIsAdmin(user.isAdmin);
+        setIsStudent(user.isStudent);
+        setIsTeacher(user.isTeacher);
+        setUserData({
+          avatarUrl: user.avatarUrl || DEFAULT_AVATAR,
+          username: user.name,
+        });
+      }
     } catch (error) {
-      message.error("Error fetching user data");
+      if (error.response && error.response.status === 401) {
+        message.error("Unauthorized. Please log in again.");
+      } else if (error.response && error.response.status === 500) {
+        message.error("Server error. Please try again later.");
+      } else {
+        message.error("Error fetching user data. Please check your connection.");
+      }
     }
   };
+  
 
   const handleLogout = async () => {
     try {
@@ -152,7 +166,7 @@ const SideBar = ({ children }) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis'
             }}>
-              {location.state.data.name}
+              {userData.username}
             </span>
           )}
         </div>
@@ -169,7 +183,7 @@ const SideBar = ({ children }) => {
             paddingTop: '15px',
           }}
         >
-          {location.state.data.isStudent ? (
+          {isStudent ? (
             <div className="teacher-dashboard">
               <Menu.Item key="1" icon={<DashboardOutlined />}>
                 <Link to="/dashboard">Dashboard</Link>
@@ -181,11 +195,11 @@ const SideBar = ({ children }) => {
                 Log Out
               </Menu.Item>
             </div>
-          ) : location.state.data.isTeacher ? (
+          ) : isTeacher ? (
             (
               <div className="student-dashboard">
                 <Menu.Item key="1" icon={<DashboardOutlined />}>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/teacher-analytic">Dashboard</Link>
                 </Menu.Item>
                 <Menu.Item key="2" icon={<PendingActions />}>
                   <Link to="/create-course">Create Course</Link>
@@ -201,20 +215,14 @@ const SideBar = ({ children }) => {
                 </Menu.Item>
               </div>
             )
-          ): location.state.data.isAdmin ? (
+          ): isAdmin ? (
               (
                 <div className="student-dashboard">
                   <Menu.Item key="1" icon={<DashboardOutlined />}>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </Menu.Item>
-                  <Menu.Item key="2" icon={<PendingActions />}>
-                    <Link to="/create-course">Create Course</Link>
+                    <Link to="/analytic">Dashboard</Link>
                   </Menu.Item>
                   <Menu.Item key="3" icon={<AlignCenterOutlined />}>
-                    <Link to="/enroll-student">Enrolled Students</Link>
-                  </Menu.Item>
-                  <Menu.Item key="4" icon={<FundViewOutlined />}>
-                    <Link to="/created-all-course">View Courses</Link>
+                    <Link to="/enroll-student">Manage Teachers</Link>
                   </Menu.Item>
                   <Menu.Item key="5" icon={<PoweroffOutlined />} onClick={handleLogout}>
                     Log Out

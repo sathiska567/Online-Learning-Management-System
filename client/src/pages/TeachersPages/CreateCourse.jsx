@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import SideBar from '../../components/DashboardSideBar/SideBar';
+import api from '../../api/baseUrl';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -22,11 +23,10 @@ const CreateCourse = () => {
 
   // Categories for the select dropdown
   const categories = [
-    'Programming',
-    'Design',
-    'Business',
+    'Web Development',
+    'Mobile Development',
+    'Machine Learning',
     'Marketing',
-    'Personal Development',
     'Other'
   ];
 
@@ -45,9 +45,24 @@ const CreateCourse = () => {
 
       console.log('Form values:', values);
 
+      const courseImage = values.imgLink.fileList[0].originFileObj;
+      // console.log(values.title);
+      
+      const formData = new FormData();
+      formData.append('image', courseImage);
+      formData.append("title",values.title)
+      formData.append("description",values.description)
+      formData.append("category",values.category)
+      formData.append("price",values.price)
+      formData.append("instructorName",values.instructor)
+      formData.append("duration",values.duration)
+
+      const response = await api.post("/courses/create",formData)
+      console.log(response);
+      
       message.success('Course created successfully!');
 
-      form.resetFields();
+      // form.resetFields();
     } catch (error) {
       message.error('Failed to create course');
       console.error('Error:', error);

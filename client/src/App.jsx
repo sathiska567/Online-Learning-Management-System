@@ -13,6 +13,7 @@ import LoginPage from './pages/AuthPages/LoginPage';
 import ForgottenPasswordPage from './pages/AuthPages/ForgottenPasswordPage';
 import OTPPage from './pages/AuthPages/OTPPage';
 import ChangePasswordPage from './pages/AuthPages/ChangePasswordPage';
+import TeacherAnalyticPage from './pages/TeachersPages/TeacherAnalyticPage';
 
 export default function App() {
   return (
@@ -21,6 +22,8 @@ export default function App() {
         <Route path="/" element={<LandingPage/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/analytic" element= {<AnalyticPage/>} />
+        <Route path="/teacher-analytic" element= {<TeacherAnalyticPage/>} />
+
         <Route path="/history" element={<EnrollmentHistory/>} />
         <Route path='/create-course' element={<CreateCourse/>} />
         <Route path='/created-all-course' element={<ViewCourse/>} />

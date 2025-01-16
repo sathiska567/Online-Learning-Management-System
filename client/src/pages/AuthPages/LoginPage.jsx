@@ -38,9 +38,14 @@ const LoginPage = () => {
         localStorage.setItem("token",response.data.data.token);
         message.success('Login successful');
          if(response.data.data.user.isAdmin){
-          navigate("/analytic",{state:{data:response.data.data.user}})
+          navigate("/analytic")
          }
-        // navigate("/dashboard",{state:{data:response.data.data.user}})
+        else if(response.data.data.user.isStudent){
+          navigate("/dashboard")
+        }
+        else if(response.data.data.user.isTeacher){
+          navigate("/teacher-analytic")
+        }
         // window.location.reload()
         // navigate("/dashboard")
       }
