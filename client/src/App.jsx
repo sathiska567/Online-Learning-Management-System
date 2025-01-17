@@ -18,6 +18,7 @@ import ViewCourseDetails from './pages/TeachersPages/ViewCourseDetails';
 import SingleCourseViewPage from './pages/SingleCourseViewPage/SingleCourseViewPage';
 import ManageTeachersPage from './pages/AdminPages/ManageTeachersPage/ManageTeachersPage';
 import ManageCourseApprove from './pages/AdminPages/ManageCourseApprove/ManageCourseApprove';
+import PrivateRoute from './components/ProtectRoute/PrivateRoute';
 
 export default function App() {
   return (
@@ -25,22 +26,20 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage/>} />
         <Route path="/single-course" element={<SingleCourseViewPage/>} />
-        
+        <Route path='/contact-us' element={<ContactUsPage/>} />
 
-        <Route path="/dashboard" element={<Dashboard/>} />
-
-        <Route path="/analytic" element= {<AnalyticPage/>} />
-        <Route path="/teacher-analytic" element= {<TeacherAnalyticPage/>} />
-        <Route path="/manage-teachers" element= {<ManageTeachersPage/>} />
-        <Route path="/manage-course" element= {<ManageCourseApprove/>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+        <Route path="/analytic" element= {<PrivateRoute><AnalyticPage/></PrivateRoute>} />
+        <Route path="/teacher-analytic" element= {<PrivateRoute><TeacherAnalyticPage/></PrivateRoute>} />
+        <Route path="/manage-teachers" element= {<PrivateRoute><ManageTeachersPage/></PrivateRoute>} />
+        <Route path="/manage-course" element= {<PrivateRoute><ManageCourseApprove/></PrivateRoute>} />
         
           
-        <Route path="/history" element={<EnrollmentHistory/>} />
-        <Route path='/create-course' element={<CreateCourse/>} />
-        <Route path='/view-course' element={<ViewCourseDetails/>} />
-        <Route path='/created-all-course' element={<ViewCourse/>} />
-        <Route path='/enroll-student' element={<EnrollStudents/>} />
-        <Route path='/contact-us' element={<ContactUsPage/>} />
+        <Route path="/history" element={<PrivateRoute><EnrollmentHistory/></PrivateRoute>} />
+        <Route path='/create-course' element={<PrivateRoute><CreateCourse/></PrivateRoute>} />
+        <Route path='/view-course' element={<PrivateRoute><ViewCourseDetails/></PrivateRoute>} />
+        <Route path='/created-all-course' element={<PrivateRoute><ViewCourse/></PrivateRoute>} />
+        <Route path='/enroll-student' element={<PrivateRoute><EnrollStudents/></PrivateRoute>} />
 
         <Route path='/register' element = {<RegistrationPage/>}/>
         <Route path='/login' element={<LoginPage/>} />

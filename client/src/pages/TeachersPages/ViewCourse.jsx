@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SideBar from '../../components/DashboardSideBar/SideBar';
-import { Button, message, Space, Table } from 'antd';
+import { Button, message, Space, Table , Spin } from 'antd';
 import api from '../../api/baseUrl';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,8 @@ export default function ViewCourse() {
   const [createdCourse, setCreatedCourse] = useState([]);
   const [userId, setUserId] = useState('');
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(true);
+  
 
   const getCurrentUser = async () => {
     const token = localStorage.getItem('token');
@@ -20,6 +22,7 @@ export default function ViewCourse() {
 
       console.log(response);
       setUserId(response.data.user._id);
+
     } catch (error) {
       message.error(error.response?.data?.message || 'Error fetching user data');
     }
@@ -41,6 +44,8 @@ export default function ViewCourse() {
     } catch (error) {
       message.error('Something went wrong in fetching course data');
       console.error('Error fetching courses:', error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -124,7 +129,11 @@ export default function ViewCourse() {
 
   return (
     <SideBar>
-      <Table columns={columns} dataSource={createdCourse} />
+      {loading ? (
+        <Spin size="large" style={{ display: 'block', margin: '50px auto' }} />
+      ):(
+        <Table columns={columns} dataSource={createdCourse} />
+      )}
     </SideBar>
   );
 }

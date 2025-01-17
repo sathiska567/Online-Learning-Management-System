@@ -193,7 +193,7 @@ const SingleCoursePage = ({ course }) => {
                 <div className="flex items-center gap-3">
                   <UserOutlined className="text-blue-500 text-xl" />
                   <Text className="text-gray-700">
-                    {courseData.enrolledStudents} students enrolled
+                    {courseData.enrolledStudents.length} students enrolled
                   </Text>
                 </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { message } from 'antd';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import api from '../../api/baseUrl';
 
 const OTPPage = () => {
   const navigate = useNavigate();
@@ -42,10 +43,12 @@ const OTPPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/forgotten/verify-otp", {email:location.state.email, otp: otpString });
+      console.log(otpString,location);
+      
+      const response = await api.post("/forgotten/verify-otp", {email:location.state.email, otp: otpString });
       if(response.data.success){
         message.success('OTP verified successfully');
-        navigate('/reset-password' , {state:{email:location.state.email}});
+        navigate('/reset' , {state:{email:location.state.email}});
       }
     } catch (error) {
       message.error('Please Enter Correct OTP !');
@@ -105,8 +108,8 @@ const OTPPage = () => {
 
               <div className="text-center small">
                 <span className="text-secondary">Didn't receive the code? </span>
-                <a href="#" className="text-decoration-none text-primary">
-                  Resend OTP
+                <a href="/login" className="text-decoration-none text-primary">
+                  login
                 </a>
               </div>
             </form>

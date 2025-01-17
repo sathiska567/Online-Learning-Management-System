@@ -3,6 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { message } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import api from '../../api/baseUrl';
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const ChangePasswordPage = () => {
 
     if (!Object.values(newErrors).some((error) => error)) {
       try {
-        const response = await axios.post("http://localhost:8080/api/v1/forgotten/reset-password",{email:location.state.email , password:formData.password});
+        const response = await api.post("/forgotten/reset-password",{email:location.state.email , password:formData.password});
         message.success('Password reset successful');
         navigate('/login');
       } catch (error) {

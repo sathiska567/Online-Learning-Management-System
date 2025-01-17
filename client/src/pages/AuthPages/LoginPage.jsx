@@ -41,10 +41,10 @@ const LoginPage = () => {
           navigate("/analytic")
          }
         else if(response.data.data.user.isStudent){
-          navigate("/dashboard")
+          navigate("/")
         }
         else if(response.data.data.user.isTeacher){
-          navigate("/teacher-analytic")
+          navigate("/")
         }
         // window.location.reload()
         // navigate("/dashboard")
@@ -103,6 +103,8 @@ const LoginPage = () => {
               />
             </Form.Item>
 
+            <a href="/forgot-password">Forgotten Password</a>
+
             <Form.Item style={{ marginTop: '1.5rem' }}>
               <Button type="primary" htmlType="submit" block>
                 Sign In
@@ -111,7 +113,7 @@ const LoginPage = () => {
 
             <div style={{ textAlign: 'center', fontSize: '0.875rem' }}>
               <span style={{ color: '#8c8c8c' }}>Don't have an account? </span>
-              <a href="/login" style={{ textDecoration: 'none' }}>
+              <a href="/register" style={{ textDecoration: 'none' }}>
                 Register
               </a>
             </div>

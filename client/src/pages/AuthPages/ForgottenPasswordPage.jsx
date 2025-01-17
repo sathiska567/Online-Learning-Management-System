@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { message, Spin } from 'antd';
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api/baseUrl';
 
 const ForgottenPasswordPage = () => {
   const navigate = useNavigate();
@@ -73,9 +74,20 @@ const ForgottenPasswordPage = () => {
 
     setErrors(newErrors);
 
-    if (!Object.values(newErrors).some(error => error)) {
-      
+    console.log(formData.email);
+
+    try {
+      const response = await api.post("/forgotten/forgot-password",{email:formData.email})
+      if(response.data.success){
+        message.success(response.data.message)
+        navigate("/otp",{state:{email:formData.email}})
+      }else{
+        message.error(response.data.message)
+      }
+    } catch (error) {
+       message.error(error.message)
     }
+    
   };
 
   const getInputBorderColor = (fieldName) => {

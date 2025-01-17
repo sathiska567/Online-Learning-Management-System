@@ -108,7 +108,7 @@ const SideBar = ({ children }) => {
         username: "",
       });
       
-      navigate("/login");
+      navigate("/");
 
     } catch (error) {
       console.error("Logout failed:", error);

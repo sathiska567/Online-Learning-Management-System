@@ -1,14 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message, Input, Button, Layout, Menu, Row, Col } from 'antd';
-import { SearchOutlined, LogoutOutlined } from '@ant-design/icons';
+import { SearchOutlined, LogoutOutlined, DashboardOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import api from '../../api/baseUrl';
 
 const { Header } = Layout;
 
-const Navbar = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+const Navbar = ({ searchQuery, setSearchQuery }) => {
   const navigate = useNavigate();
+  const [isStudent , setIsStudent] = useState(false);
+  const [isTeacher , setIsTeacher] = useState(false);
+  const [search , setSearch] = useState('');
+
+  const getCurrentUser = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      message.error("No authentication token found!");
+      return;
+    }
+
+  try {
+      const response = await api.get('/auth/getCurrentUser', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(response);
+
+      if (response.data.success) {
+        setIsStudent(response.data.user.isStudent);
+        setIsTeacher(response.data.user.isTeacher);
+
+      } else {
+        message.error(response.data.message || "Failed to fetch user details");
+      }
+    } catch (error) {
+      message.error(error.response?.data?.message || "Error fetching user data");
+    }
+  };
 
   const handleLoginNavigate = () => {
     try {
@@ -26,37 +56,37 @@ const Navbar = () => {
     }
   };
 
-  const handleLogOutNavigate = () => {
+  const handleDashBoardNavigate = () => {
     try {
-      localStorage.removeItem("token");
-      message.success('Logout Successful');
-      window.location.reload();
-      navigate('/home');
+      if(isStudent){
+        navigate('/dashboard');
+      }
+      if(isTeacher){
+        navigate('/teacher-analytic');
+      }
     } catch (error) {
       message.error(error.message);
     }
   };
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) {
-      message.warning('Please enter a search term.');
-      return;
-    }
+    console.log("Search Query:", search);
     try {
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}`
-      );
-      if (response.data.items?.length > 0) {
-        message.success('Search completed successfully!');
-        console.log('Books found:', response.data.items);
-      } else {
-        message.warning('No results found for your search.');
-      }
+      // const recommendationCourse = await api.post("/recommendation/course",{interests:search})
+      // console.log(recommendationCourse);
+      setSearchQuery(search)
+      
     } catch (error) {
-      message.error('An error occurred during the search.');
-      console.error(error);
+       message.error(error.message);
     }
   };
+
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getCurrentUser()
+    }
+  },[])
 
   return (
     <Header style={{ backgroundColor: '#001529', padding: '0 20px' }}>
@@ -76,8 +106,8 @@ const Navbar = () => {
           <Input
             placeholder="Search here..."
             prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             onPressEnter={handleSearch}
             style={{ borderRadius: '5px' }}
           />
@@ -92,9 +122,17 @@ const Navbar = () => {
             <Button onClick={handleRegisterNavigate} type="primary">
               Register
             </Button>
-            <Button onClick={handleLogOutNavigate} type="primary" danger icon={<LogoutOutlined />}>
-              Logout
+            {isStudent ? (
+              <Button onClick={handleDashBoardNavigate} type="primary" danger icon={<DashboardOutlined />}>
+              Student DashBoard
             </Button>
+            ):isTeacher ? (
+              <Button onClick={handleDashBoardNavigate} type="default" icon={<DashboardOutlined />}>
+              Teacher DashBoard
+            </Button>
+            ):(
+              " "
+            )}
           </div>
         </Col>
       </Row>

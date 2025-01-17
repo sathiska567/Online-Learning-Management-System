@@ -1,36 +1,35 @@
-import React, { useRef } from 'react';
-import { Carousel, Avatar, Card, Button } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Carousel, Avatar, Card, Button, message } from 'antd';
 import { UserOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import api from '../../api/baseUrl';
 
 const TestimonialSlider = () => {
   const carouselRef = useRef();
+    const [testimonialData , setTestimonialData] = useState([]);
+  
+
+  const getReviews = async () => {
+    try {
+      const response = await api.get('/courses/getEachUserCreatedCourseReview');
+      console.log(response.data);
+       if(response.data.success){
+        setTestimonialData(response.data.data)
+       }else{
+        message.error(response.data.message)
+       }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const testimonials = [
     {
       id: 1,
-      content: "Since implementing KnowledgePluse, our organization has witnessed a remarkable transformation in how we approach learning. The platform's simplicity belies its powerful capabilities, offering a seamless and enjoyable educational experience. The efficiency with which we can now manage courses, track progress, and foster collaboration among learners is truly impressive.",
-      author: "Sathiska",
-      title: "Theresa Webb",
       avatars: [
         "/path/to/avatar1.jpg",
         "/path/to/avatar2.jpg",
-        "/path/to/avatar3.jpg",
-        "/path/to/avatar4.jpg"
       ]
     },
-    {
-      id: 1,
-      content: "Since implementing KnowledgePluse, our organization has witnessed a remarkable transformation in how we approach learning. The platform's simplicity belies its powerful capabilities, offering a seamless and enjoyable educational experience. The efficiency with which we can now manage courses, track progress, and foster collaboration among learners is truly impressive.",
-      author: "Sasindu",
-      title: "Theresa Webb",
-      avatars: [
-        "/path/to/avatar1.jpg",
-        "/path/to/avatar2.jpg",
-        "/path/to/avatar3.jpg",
-        "/path/to/avatar4.jpg"
-      ]
-    },
-    
   ];
 
   const settings = {
@@ -50,6 +49,11 @@ const TestimonialSlider = () => {
   const handleNext = () => {
     carouselRef.current.next();
   };
+
+
+    useEffect(() => {
+      getReviews();
+    }, []);
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', position: 'relative' }}>
@@ -82,7 +86,7 @@ const TestimonialSlider = () => {
         }}
       />
       <Carousel ref={carouselRef} {...settings}>
-        {testimonials.map((testimonial) => (
+        {testimonialData.map((testimonial) => (
           <div key={testimonial.id}>
             <Card
               style={{
@@ -106,29 +110,28 @@ const TestimonialSlider = () => {
                   marginBottom: '30px',
                   padding: '0 20px',
                 }}>
-                  "{testimonial.content}"
+                  "{testimonial.reviewText}"
                 </div>
                 <div>
                   <h3 style={{ 
                     color: '#2d3748',
                     marginBottom: '15px'
                   }}>
-                    {testimonial.author}
+                    {testimonial.reviewer.name}
                   </h3>
                   <p style={{ 
                     color: '#718096',
                     marginBottom: '20px'
                   }}>
-                    {testimonial.title}
+                    {testimonial.reviewer.email}
                   </p>
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',
                     gap: '10px'
                   }}>
-                    {testimonial.avatars.map((avatar, index) => (
+                    {testimonials[0].avatars.map((avatar, index) => (
                       <Avatar
-                        key={index}
                         icon={<UserOutlined />}
                         src={avatar}
                         size={40}

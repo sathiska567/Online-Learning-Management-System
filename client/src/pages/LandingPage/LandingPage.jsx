@@ -1,5 +1,5 @@
 // LandingPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import styles from "./LandingPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState([]);
 
   const handleContactUsClick = async()=>{
     try {
@@ -26,7 +27,7 @@ const LandingPage = () => {
   return (
     <>
      <div className={styles.navBarSection}>
-       <NavBar />
+       <NavBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
        </div>
        <div className={styles.mainWrapper}>
       <div className={styles.contentWrapper}>
@@ -61,7 +62,7 @@ const LandingPage = () => {
         <CompanyLogoSection/>
       </div>
       <div>
-        <CourseSection/>
+        <CourseSection searchQuery={searchQuery}/>
       </div>
       <div>
         <TestimonialSlider/>

@@ -35,7 +35,7 @@ const ContactUsPage = () => {
                   <Title level={4}>Call Us</Title>
                   <Text type="secondary">Mon-Fri: 9:00 AM - 6:00 PM</Text>
                   <br />
-                  <Text type="primary">+1 (555) 123-4567</Text>
+                  <Text type="primary">+94 798 1980</Text>
                 </div>
               </Card>
             </Col>
@@ -47,7 +47,7 @@ const ContactUsPage = () => {
                   <Title level={4}>Email Us</Title>
                   <Text type="secondary">We'll respond within 24 hours</Text>
                   <br />
-                  <Text type="primary">contact@edusphere.com</Text>
+                  <Text type="primary">sasindusathiska@gmail.com</Text>
                 </div>
               </Card>
             </Col>
@@ -59,7 +59,7 @@ const ContactUsPage = () => {
                   <Title level={4}>Visit Us</Title>
                   <Text type="secondary">123 Education Street</Text>
                   <br />
-                  <Text type="secondary">New York, NY 10001</Text>
+                  <Text type="secondary">Sri Lanka</Text>
                 </div>
               </Card>
             </Col>
@@ -70,7 +70,7 @@ const ContactUsPage = () => {
             <Space>
               <ClockCircleOutlined />
               <Text type="secondary">
-                Operating Hours: Monday - Friday, 9:00 AM - 6:00 PM EST
+                Operating Hours: Monday - Friday, 9:00 AM - 6:00 PM 
               </Text>
             </Space>
           </div>
