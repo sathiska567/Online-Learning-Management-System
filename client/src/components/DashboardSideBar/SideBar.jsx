@@ -67,7 +67,7 @@ const SideBar = ({ children }) => {
     }
   
     try {
-      const response = await axios.get("http://localhost:8080/api/v1/auth/getCurrentUser", {
+      const response = await api.get("/auth/getCurrentUser", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

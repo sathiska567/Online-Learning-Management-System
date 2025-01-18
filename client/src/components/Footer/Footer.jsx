@@ -46,7 +46,7 @@ const WebsiteFooter = () => {
     <Footer style={footerStyle}>
       <Row gutter={[48, 24]}>
         <Col xs={24} sm={24} md={8} style={columnStyle}>
-          <Title level={4} style={titleStyle}>KnowledgePulse</Title>
+          <Title level={4} style={titleStyle}>EduSphere</Title>
           <Text style={textStyle}>
             Join now to receive personalized recommendations from the full Coursera catalog.
           </Text>
