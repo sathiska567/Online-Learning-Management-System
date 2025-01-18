@@ -1,0 +1,12 @@
+.custom-calendar .ant-picker-calendar-header {
+        padding: 0;
+}
+
+.custom-calendar .ant-picker-calendar-date-content {
+        height: 80px;
+}
+
+.month-dropdown{
+        padding-bottom: 20px;
+        background-color: red;
+}

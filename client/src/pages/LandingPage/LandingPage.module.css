@@ -1,0 +1,144 @@
+/* LandingPage.module.css */
+.mainWrapper {
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    background: #ffffff;
+  }
+  
+  .contentWrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 0 0 0%;
+    position: relative;
+  }
+  
+  .HomeContainer {
+    width: 100%;
+    min-height: calc(100vh - 80px); /* Adjust based on your navbar height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0;
+    gap: 0px;
+    flex-wrap: wrap;
+    
+  }
+  
+  .HomeTextContainer {
+    flex: 1;
+    min-width: 300px;
+    max-width:700px;
+    padding-left:5%;
+  }
+  
+  .homeTitle {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  
+  .HomeSpecial {
+    color: #2B468B;
+  }
+  
+  .homeDescription {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 32px;
+  }
+  
+  .homeButtonGroup {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .coursesButton, .contactUsButton {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .coursesButton {
+    background: #2B468B;
+    color: white;
+    border: none;
+  }
+  
+  .contactUsButton {
+    background: transparent;
+    border: 2px solid #2B468B;
+    color: #2B468B;
+  }
+  
+  .arrow {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+  
+  .coursesButton:hover .arrow,
+  .contactUsButton:hover .arrow {
+    transform: translateX(5px);
+  }
+  
+  .HomeImageContainer {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .HomeImage {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  /* Add smooth scrolling to the whole page */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .navBarSection{
+    /* background-color: red; */
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .HomeContainer {
+      flex-direction: column;
+      text-align: center;
+      padding-top: 20px;
+    }
+  
+    .HomeTextContainer {
+      order: 1;
+      padding: 20px;
+    }
+  
+    .homeButtonGroup {
+      justify-content: center;
+    }
+  
+    .homeTitle {
+      font-size: 36px;
+    }
+  
+    .HomeImageContainer {
+      order: 0;
+    }
+  
+    .contentWrapper {
+      padding: 0 20px;
+    }
+  }
