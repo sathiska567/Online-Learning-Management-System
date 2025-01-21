@@ -72,9 +72,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
   const handleSearch = async () => {
     console.log("Search Query:", search);
     try {
-      // const recommendationCourse = await api.post("/recommendation/course",{interests:search})
+      const recommendationCourse = await api.post("/recommendation/course",{interests:search})
       // console.log(recommendationCourse);
-      setSearchQuery(search)
+      setSearchQuery(recommendationCourse)
       
     } catch (error) {
        message.error(error.message);
