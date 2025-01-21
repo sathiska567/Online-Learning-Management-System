@@ -63,31 +63,10 @@ const handleNavigateSingleCourse = async(course)=>{
 const getRecommendationCourses = async(searchQuery)=>{
     try {
       console.log(searchQuery);
-      // const courseData = searchQuery.data.data;
-
-      //   // Process and format course data
-      //   const formattedCourses = courseData.map((course) => {
-      //     // Extract course details from each array
-      //     const courseName = course[0].split(":")[1].trim();
-      //     const category = course[1].split(":")[1].trim();
-      //     const relevantTopics = course[2].split(":")[1].trim();
-      //     const price = course[3].split(":")[1].trim();
-      //     const duration = course[4].split(":")[1].trim();
-      //     const instructor = course[5].split(":")[1].trim();
-      //     const imageLink = course[6].split(":")[1].trim().replace('[', '').replace(']', '').trim();
-
-      //     return {
-      //       courseName,
-      //       category,
-      //       relevantTopics,
-      //       price,
-      //       duration,
-      //       instructor,
-      //       imageLink
-      //     };
-      //   });
-
-      //   setCourses(formattedCourses); // Update state with formatted courses
+      // const courseData = searchQuery.data.recommendations ? searchQuery.data.recommendations : [] ;
+      // console.log(courseData);
+      
+        // setCreatedCourse(courseData); // Update state with formatted courses
       
     } catch (error) {
        message.error(error.message)
