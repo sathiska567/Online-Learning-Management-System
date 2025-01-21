@@ -88,7 +88,7 @@ const WebsiteFooter = () => {
       <Row>
         <Col span={24}>
           <Text style={copyrightStyle}>
-            Designed by@Rubel, 2023, All rights reserved
+            Designed by@Sathiska, 2023, All rights reserved
           </Text>
         </Col>
       </Row>
